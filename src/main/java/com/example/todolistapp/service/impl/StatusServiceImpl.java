@@ -1,7 +1,6 @@
 package com.example.todolistapp.service.impl;
 
 import com.example.todolistapp.model.Status;
-import com.example.todolistapp.model.Task;
 import com.example.todolistapp.repository.StatusRepository;
 import com.example.todolistapp.service.StatusService;
 import org.springframework.stereotype.Service;
@@ -45,5 +44,10 @@ public class StatusServiceImpl implements StatusService {
     @Override
     public void deleteStatusById(Long statusId) {
         statusRepository.delete(getStatusById(statusId));
+    }
+
+    @Override
+    public Status getStatusByName(Status.StatusName statusName) {
+        return statusRepository.findByStatusName(statusName).orElseThrow(() -> new RuntimeException("Can't find status by statusName " + statusName));
     }
 }

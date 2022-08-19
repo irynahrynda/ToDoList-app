@@ -14,4 +14,6 @@ public interface StatusService {
     Status updateStatusById(Long statusId, Status status);
 
     void deleteStatusById(Long statusId);
+
+    Status getStatusByName(Status.StatusName statusName);
 }

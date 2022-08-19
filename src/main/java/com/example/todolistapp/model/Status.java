@@ -9,9 +9,14 @@ public class Status {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(value = EnumType.STRING)
+    @Column(unique = true)
     private StatusName statusName;
 
     public Status() {
+    }
+
+    public Status(StatusName statusName) {
+        this.statusName = statusName;
     }
 
     public Long getId() {
@@ -39,7 +44,7 @@ public class Status {
     }
 
     public enum StatusName {
-        DO,
+        TO_DO,
         IN_PROGRESS,
         DONE,
         TERMINATED

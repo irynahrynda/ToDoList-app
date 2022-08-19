@@ -6,16 +6,20 @@ import com.example.todolistapp.model.TasksList;
 import com.example.todolistapp.service.StatusService;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Collectors;
+
 @Component
 public class TasksListMapper {
     private final UserMapper userMapper;
-   private final StatusMapper statusMapper;
-    private StatusService statusService;
+    private final StatusMapper statusMapper;
+    private final StatusService statusService;
+    private final TaskMapper taskMapper;
 
-    public TasksListMapper(UserMapper userMapper, StatusMapper statusMapper, StatusService statusService) {
+    public TasksListMapper(UserMapper userMapper, StatusMapper statusMapper, StatusService statusService, TaskMapper taskMapper) {
         this.userMapper = userMapper;
         this.statusMapper = statusMapper;
         this.statusService = statusService;
+        this.taskMapper = taskMapper;
     }
 
 
@@ -26,6 +30,14 @@ public class TasksListMapper {
         if (tasksList.getStatus() != null) {
             tasksListResponseDto.setStatus(statusMapper.mapToDto(tasksList.getStatus()));
         }
+
+        if (tasksList.getTasks() != null) {
+            tasksListResponseDto.setTasks(tasksList.getTasks().stream()
+                    .map(taskMapper::mapToDto)
+                    .collect(Collectors.toList()));
+        }
+
+
         tasksListResponseDto.setDeadline(tasksList.getDeadline());
         if (tasksList.getUser() != null) {
             tasksListResponseDto.setUser(userMapper.mapToDto(tasksList.getUser()));

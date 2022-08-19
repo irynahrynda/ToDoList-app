@@ -1,7 +1,9 @@
 package com.example.todolistapp.service.impl;
 
+import com.example.todolistapp.model.Status;
 import com.example.todolistapp.model.Task;
 import com.example.todolistapp.repository.TaskRepository;
+import com.example.todolistapp.service.StatusService;
 import com.example.todolistapp.service.TaskService;
 import org.springframework.stereotype.Service;
 
@@ -10,13 +12,19 @@ import java.util.List;
 @Service
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
+    private final StatusService statusService;
 
-    public TaskServiceImpl(TaskRepository taskRepository) {
+
+    public TaskServiceImpl(TaskRepository taskRepository, StatusService statusService) {
         this.taskRepository = taskRepository;
+        this.statusService = statusService;
     }
 
     @Override
     public Task createTask(Task task) {
+        if (task.getStatus() == null) {
+            task.setStatus(statusService.getStatusByName(Status.StatusName.TO_DO));
+        }
         return taskRepository.save(task);
     }
 
