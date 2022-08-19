@@ -4,7 +4,6 @@ import com.example.todolistapp.model.User;
 import com.example.todolistapp.repository.UserRepository;
 import com.example.todolistapp.service.UserService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -53,6 +52,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(Long userId) {
         userRepository.delete(getUserById(userId));
-
     }
 }

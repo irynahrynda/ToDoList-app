@@ -1,15 +1,11 @@
 package com.example.todolistapp.controller;
 
-import com.example.todolistapp.dto.request.TaskRequestDto;
 import com.example.todolistapp.dto.request.TasksListRequestDto;
-import com.example.todolistapp.dto.response.TaskResponseDto;
 import com.example.todolistapp.dto.response.TasksListResponseDto;
 import com.example.todolistapp.mapper.TasksListMapper;
-import com.example.todolistapp.model.Task;
 import com.example.todolistapp.model.TasksList;
 import com.example.todolistapp.service.TasksListService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

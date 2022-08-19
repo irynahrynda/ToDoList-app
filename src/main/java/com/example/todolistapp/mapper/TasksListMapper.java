@@ -5,7 +5,6 @@ import com.example.todolistapp.dto.response.TasksListResponseDto;
 import com.example.todolistapp.model.TasksList;
 import com.example.todolistapp.service.StatusService;
 import org.springframework.stereotype.Component;
-
 import java.util.stream.Collectors;
 
 @Component
@@ -15,13 +14,13 @@ public class TasksListMapper {
     private final StatusService statusService;
     private final TaskMapper taskMapper;
 
-    public TasksListMapper(UserMapper userMapper, StatusMapper statusMapper, StatusService statusService, TaskMapper taskMapper) {
+    public TasksListMapper(UserMapper userMapper, StatusMapper statusMapper,
+                           StatusService statusService, TaskMapper taskMapper) {
         this.userMapper = userMapper;
         this.statusMapper = statusMapper;
         this.statusService = statusService;
         this.taskMapper = taskMapper;
     }
-
 
     public TasksListResponseDto mapToDto(TasksList tasksList) {
         TasksListResponseDto tasksListResponseDto = new TasksListResponseDto();
@@ -36,7 +35,6 @@ public class TasksListMapper {
                     .map(taskMapper::mapToDto)
                     .collect(Collectors.toList()));
         }
-
 
         tasksListResponseDto.setDeadline(tasksList.getDeadline());
         if (tasksList.getUser() != null) {
