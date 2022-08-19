@@ -14,7 +14,7 @@ public class TasksList {
     @ManyToOne
     private Status status;
     private LocalDateTime deadline;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "tasksList")
     private List<Task> tasks;
     @ManyToOne
     private User user;

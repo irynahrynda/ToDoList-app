@@ -4,7 +4,7 @@ import com.example.todolistapp.model.Task;
 import java.util.List;
 
 public interface TaskService {
-    Task createTask(Task task);
+    Task createTask(Long tasksListId, Task task);
 
     Task getTaskById(Long taskId);
 

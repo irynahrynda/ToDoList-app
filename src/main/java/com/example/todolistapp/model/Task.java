@@ -18,6 +18,8 @@ public class Task {
     @ManyToOne
     private Status status;
     private LocalDateTime finishDate;
+    @ManyToOne
+    private TasksList tasksList;
 
     public Task() {
     }
@@ -54,6 +56,14 @@ public class Task {
         this.finishDate = finishDate;
     }
 
+    public TasksList getTasksList() {
+        return tasksList;
+    }
+
+    public void setTasksList(TasksList tasksList) {
+        this.tasksList = tasksList;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -61,6 +71,7 @@ public class Task {
                 ", name='" + name + '\'' +
                 ", status=" + status +
                 ", finishDate=" + finishDate +
+                ", tasksList=" + tasksList +
                 '}';
     }
 }

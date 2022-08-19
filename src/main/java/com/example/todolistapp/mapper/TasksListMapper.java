@@ -50,6 +50,10 @@ public class TasksListMapper {
         if (tasksListRequestDto.getStatusId() != null) {
             tasksList.setStatus(statusService.getStatusById(tasksListRequestDto.getStatusId()));
         }
+
+        if (tasksListRequestDto.getDeadline() != null) {
+            tasksList.setDeadline(tasksListRequestDto.getDeadline());
+        }
         return tasksList;
     }
 }
