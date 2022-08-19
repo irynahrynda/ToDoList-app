@@ -1,7 +1,6 @@
 package com.example.todolistapp.dto.response;
 
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
 @Data

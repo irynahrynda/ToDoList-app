@@ -1,7 +1,6 @@
 package com.example.todolistapp.service;
 
 import com.example.todolistapp.model.Status;
-
 import java.util.List;
 
 public interface StatusService {

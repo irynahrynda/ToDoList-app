@@ -1,15 +1,11 @@
 package com.example.todolistapp.controller;
 
-import com.example.todolistapp.dto.request.TaskRequestDto;
 import com.example.todolistapp.dto.request.UserRequestDto;
-import com.example.todolistapp.dto.response.TaskResponseDto;
 import com.example.todolistapp.dto.response.UserResponseDto;
 import com.example.todolistapp.mapper.UserMapper;
-import com.example.todolistapp.model.Task;
 import com.example.todolistapp.model.User;
 import com.example.todolistapp.service.UserService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +38,6 @@ public class UserController {
               .collect(Collectors.toList());
     }
 
-
     @PutMapping("/{id}")
     public UserResponseDto updateUser(@PathVariable Long id,
                                       @RequestBody UserRequestDto userRequestDto) {
@@ -55,5 +50,4 @@ public class UserController {
        userService.deleteUserById(id);
         return "User by id " + id + " was deleted";
     }
-
 }

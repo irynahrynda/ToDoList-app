@@ -1,11 +1,9 @@
 package com.example.todolistapp.service.impl;
 
-import com.example.todolistapp.model.Task;
 import com.example.todolistapp.model.TasksList;
 import com.example.todolistapp.repository.TasksListRepository;
 import com.example.todolistapp.service.TasksListService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

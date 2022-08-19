@@ -6,7 +6,6 @@ import com.example.todolistapp.mapper.TaskMapper;
 import com.example.todolistapp.model.Task;
 import com.example.todolistapp.service.TaskService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,12 +38,11 @@ public class TaskController {
                 .collect(Collectors.toList());
     }
 
-
     @PutMapping("/{id}")
     public TaskResponseDto updateTask(@PathVariable Long id,
                                       @RequestBody TaskRequestDto taskRequestDto) {
         Task task = taskService.updateTaskById(id, taskMapper.mapToModel(taskRequestDto));
-    return taskMapper.mapToDto(task);
+        return taskMapper.mapToDto(task);
     }
 
     @DeleteMapping("/{id}")

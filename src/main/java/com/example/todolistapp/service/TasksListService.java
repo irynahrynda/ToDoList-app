@@ -1,9 +1,6 @@
 package com.example.todolistapp.service;
 
-
-import com.example.todolistapp.model.Task;
 import com.example.todolistapp.model.TasksList;
-
 import java.util.List;
 
 public interface TasksListService {
