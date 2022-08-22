@@ -5,9 +5,20 @@ import com.example.todolistapp.dto.response.TaskResponseDto;
 import com.example.todolistapp.mapper.TaskMapper;
 import com.example.todolistapp.model.Task;
 import com.example.todolistapp.service.TaskService;
-import org.springframework.web.bind.annotation.*;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/tasks")
@@ -21,24 +32,33 @@ public class TaskController {
     }
 
     @PostMapping("/taskslists/{id}")
-    public TaskResponseDto createTask(@PathVariable Long id, @RequestBody TaskRequestDto taskRequestDto) {
+    @ApiOperation(value = "Create new task")
+    public TaskResponseDto createTask(@PathVariable Long id,
+                                      @RequestBody TaskRequestDto taskRequestDto) {
         Task task = taskService.createTask(id, taskMapper.mapToModel(taskRequestDto));
         return taskMapper.mapToDto(task);
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value = "Get task by id")
     public TaskResponseDto getTaskById(@PathVariable Long id) {
         return taskMapper.mapToDto(taskService.getTaskById(id));
     }
 
     @GetMapping
-    public List<TaskResponseDto> getAllTasks() {
+    @ApiOperation(value = "Get all tasks with pagination")
+    public List<TaskResponseDto> getAllTasks(@RequestParam(defaultValue = "10")
+                                             @ApiParam(value = "Default value " + "is `10`") Integer count,
+                                             @RequestParam(defaultValue = "0")
+                                             @ApiParam(value = "Default value " + "is `0`") Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, count);
         return taskService.getAllTasks().stream()
                 .map(taskMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @PutMapping("/{id}")
+    @ApiOperation(value = "Update task by id")
     public TaskResponseDto updateTask(@PathVariable Long id,
                                       @RequestBody TaskRequestDto taskRequestDto) {
         Task task = taskService.updateTaskById(id, taskMapper.mapToModel(taskRequestDto));
@@ -46,6 +66,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete task by id")
     public String deleteTaskById(@PathVariable Long id) {
         taskService.deleteTaskById(id);
         return "Task by id " + id + " was deleted";

@@ -4,8 +4,8 @@ import com.example.todolistapp.dto.request.TasksListRequestDto;
 import com.example.todolistapp.dto.response.TasksListResponseDto;
 import com.example.todolistapp.model.TasksList;
 import com.example.todolistapp.service.StatusService;
-import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TasksListMapper {
@@ -37,10 +37,10 @@ public class TasksListMapper {
         }
 
         tasksListResponseDto.setDeadline(tasksList.getDeadline());
+
         if (tasksList.getUser() != null) {
             tasksListResponseDto.setUser(userMapper.mapToDto(tasksList.getUser()));
         }
-
         return tasksListResponseDto;
     }
 

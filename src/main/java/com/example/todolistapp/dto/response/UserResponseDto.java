@@ -1,13 +1,12 @@
 package com.example.todolistapp.dto.response;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class UserResponseDto {
     private Long id;
     private String name;
     private String email;
-    List<Long> rolesIds;
+    private List<Long> rolesIds;
 }

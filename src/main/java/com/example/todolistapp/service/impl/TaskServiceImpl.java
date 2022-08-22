@@ -7,10 +7,10 @@ import com.example.todolistapp.repository.TaskRepository;
 import com.example.todolistapp.service.StatusService;
 import com.example.todolistapp.service.TaskService;
 import com.example.todolistapp.service.TasksListService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -18,7 +18,8 @@ public class TaskServiceImpl implements TaskService {
     private final StatusService statusService;
     private final TasksListService tasksListService;
 
-    public TaskServiceImpl(TaskRepository taskRepository, StatusService statusService, TasksListService tasksListService) {
+    public TaskServiceImpl(TaskRepository taskRepository, StatusService statusService,
+                           TasksListService tasksListService) {
         this.taskRepository = taskRepository;
         this.statusService = statusService;
         this.tasksListService = tasksListService;
@@ -42,6 +43,7 @@ public class TaskServiceImpl implements TaskService {
             tasksListService.createTasksList(tasksList);
         }
 
+        //updateStatusTasksList(createdTask);
         return createdTask;
     }
 
@@ -67,6 +69,7 @@ public class TaskServiceImpl implements TaskService {
         if (task.getStatus() != null) {
             taskToUpdate.setStatus(task.getStatus());
         }
+       // updateStatusTasksList(taskToUpdate);
         return taskRepository.save(taskToUpdate);
     }
 
@@ -90,7 +93,6 @@ public class TaskServiceImpl implements TaskService {
                 && taskToUpdate.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
             tasksList.setStatus(statusService.getStatusByName(Status.StatusName.IN_PROGRESS));
         }
-
 
         if (taskToUpdate.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
             taskToUpdate.setFinishDate(LocalDateTime.now());
