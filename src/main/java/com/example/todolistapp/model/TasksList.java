@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "lists")
+@Table(name = "taskslists")
 public class TasksList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
