@@ -9,7 +9,6 @@ import com.example.todolistapp.service.TaskService;
 import com.example.todolistapp.service.TasksListService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -57,6 +56,7 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findAll();
     }
 
+    @Transactional
     @Override
     public Task updateTaskById(Long taskId, Task task) {
         Task taskToUpdate = getTaskById(taskId);
@@ -67,16 +67,42 @@ public class TaskServiceImpl implements TaskService {
         if (task.getStatus() != null) {
             taskToUpdate.setStatus(task.getStatus());
         }
-
-        if (task.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
-            taskToUpdate.setFinishDate(LocalDateTime.now());
-        }
-
         return taskRepository.save(taskToUpdate);
     }
 
     @Override
     public void deleteTaskById(Long taskId) {
         taskRepository.delete(getTaskById(taskId));
+    }
+
+    private void updateStatusTasksList(Task taskToUpdate) {
+        TasksList tasksList = taskToUpdate.getTasksList();
+        Long tasksCounter = tasksList.getCounter();
+
+        if (!tasksList.getStatus().getStatusName().equals(taskToUpdate.getStatus().getStatusName())
+                && !tasksList.getStatus().getStatusName().equals(Status.StatusName.DONE)
+                && !taskToUpdate.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
+            tasksList.setStatus(taskToUpdate.getStatus());
+        }
+
+        if (!tasksList.getStatus().getStatusName().equals(Status.StatusName.DONE)
+                && !tasksList.getStatus().getStatusName().equals(Status.StatusName.IN_PROGRESS)
+                && taskToUpdate.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
+            tasksList.setStatus(statusService.getStatusByName(Status.StatusName.IN_PROGRESS));
+        }
+
+
+        if (taskToUpdate.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
+            taskToUpdate.setFinishDate(LocalDateTime.now());
+            tasksCounter++;
+
+            tasksList.setCounter(tasksCounter);
+        }
+
+        if (tasksCounter == tasksList.getTasks().size()) {
+            tasksList.setStatus(statusService.getStatusByName(Status.StatusName.DONE));
+        }
+
+        tasksListService.createTasksList(tasksList);
     }
 }

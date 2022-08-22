@@ -2,6 +2,7 @@ package com.example.todolistapp.service;
 
 import com.example.todolistapp.model.User;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     User createUser (User user);
@@ -9,4 +10,5 @@ public interface UserService {
     List<User> getAllUsers();
     User updateUserById (Long userId, User user);
     void deleteUserById (Long userId);
+    Optional<User> findByEmail(String email);
 }
