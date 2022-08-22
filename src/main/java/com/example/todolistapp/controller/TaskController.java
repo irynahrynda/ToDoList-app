@@ -20,9 +20,9 @@ public class TaskController {
         this.taskMapper = taskMapper;
     }
 
-    @PostMapping
-    public TaskResponseDto createTask(@RequestBody TaskRequestDto taskRequestDto) {
-        Task task = taskService.createTask(taskMapper.mapToModel(taskRequestDto));
+    @PostMapping("/taskslists/{id}")
+    public TaskResponseDto createTask(@PathVariable Long id, @RequestBody TaskRequestDto taskRequestDto) {
+        Task task = taskService.createTask(id, taskMapper.mapToModel(taskRequestDto));
         return taskMapper.mapToDto(task);
     }
 

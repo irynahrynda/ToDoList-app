@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name = "statuses")
@@ -40,6 +41,19 @@ public class Status {
 
     public void setStatusName(StatusName statusName) {
         this.statusName = statusName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Status status = (Status) o;
+        return Objects.equals(id, status.id) && statusName == status.statusName;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, statusName);
     }
 
     @Override

@@ -14,10 +14,12 @@ public class TasksList {
     @ManyToOne
     private Status status;
     private LocalDateTime deadline;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "tasksList")
     private List<Task> tasks;
     @ManyToOne
     private User user;
+
+    private long counter;
 
     public TasksList() {
     }
@@ -70,15 +72,24 @@ public class TasksList {
         this.user = user;
     }
 
+    public Long getCounter() {
+        return counter;
+    }
+
+    public void setCounter(Long counter) {
+        this.counter = counter;
+    }
+
     @Override
     public String toString() {
-        return "Lists{" +
+        return "TasksList{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", status=" + status +
                 ", deadline=" + deadline +
                 ", tasks=" + tasks +
                 ", user=" + user +
+                ", counter=" + counter +
                 '}';
     }
 }
