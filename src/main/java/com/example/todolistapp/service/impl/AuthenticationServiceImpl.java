@@ -5,8 +5,8 @@ import com.example.todolistapp.model.User;
 import com.example.todolistapp.service.AuthenticationService;
 import com.example.todolistapp.service.RoleService;
 import com.example.todolistapp.service.UserService;
-import org.springframework.stereotype.Service;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {

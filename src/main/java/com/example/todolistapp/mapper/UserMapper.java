@@ -10,7 +10,7 @@ public class UserMapper {
     public UserResponseDto mapToDto(User user) {
         UserResponseDto userResponseDto = new UserResponseDto();
         userResponseDto.setId(user.getId());
-       userResponseDto.setName(user.getName());
+        userResponseDto.setName(user.getName());
         userResponseDto.setEmail(user.getEmail());
         return userResponseDto;
     }

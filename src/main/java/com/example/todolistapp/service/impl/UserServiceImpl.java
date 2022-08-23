@@ -3,10 +3,10 @@ package com.example.todolistapp.service.impl;
 import com.example.todolistapp.model.User;
 import com.example.todolistapp.repository.UserRepository;
 import com.example.todolistapp.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -61,6 +61,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return userRepository.findAllByEmail(email);
+        return userRepository.findByEmail(email);
     }
 }

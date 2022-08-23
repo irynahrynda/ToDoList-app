@@ -9,6 +9,7 @@ import com.example.todolistapp.service.TaskService;
 import com.example.todolistapp.service.TasksListService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,7 +19,8 @@ public class TaskServiceImpl implements TaskService {
     private final StatusService statusService;
     private final TasksListService tasksListService;
 
-    public TaskServiceImpl(TaskRepository taskRepository, StatusService statusService, TasksListService tasksListService) {
+    public TaskServiceImpl(TaskRepository taskRepository, StatusService statusService,
+                           TasksListService tasksListService) {
         this.taskRepository = taskRepository;
         this.statusService = statusService;
         this.tasksListService = tasksListService;
@@ -28,7 +30,16 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task createTask(Long tasksListId, Task task) {
         TasksList tasksList = tasksListService.getTasksListById(tasksListId);
-        task.setTasksList(tasksList);
+        if (!tasksList.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
+            task.setTasksList(tasksList);
+        } else {
+            throw new RuntimeException("Cant add task to tasksList");
+        }
+
+        if (task.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
+            task.setStatus(statusService.getStatusByName(Status.StatusName.IN_PROGRESS));
+            System.out.println("Can't create task  with status \"DONE\", task has status \"IN PROGRESS\"");
+        }
 
         if (task.getStatus() == null) {
             task.setStatus(statusService.getStatusByName(Status.StatusName.TO_DO));
@@ -42,6 +53,7 @@ public class TaskServiceImpl implements TaskService {
             tasksListService.createTasksList(tasksList);
         }
 
+        updateStatusTasksList(createdTask);
         return createdTask;
     }
 
@@ -67,6 +79,7 @@ public class TaskServiceImpl implements TaskService {
         if (task.getStatus() != null) {
             taskToUpdate.setStatus(task.getStatus());
         }
+        updateStatusTasksList(taskToUpdate);
         return taskRepository.save(taskToUpdate);
     }
 
@@ -80,7 +93,8 @@ public class TaskServiceImpl implements TaskService {
         Long tasksCounter = tasksList.getCounter();
 
         if (!tasksList.getStatus().getStatusName().equals(taskToUpdate.getStatus().getStatusName())
-                && !tasksList.getStatus().getStatusName().equals(Status.StatusName.DONE)
+        && taskToUpdate.getStatus().getId() > tasksList.getStatus().getId()
+//                && !tasksList.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
                 && !taskToUpdate.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
             tasksList.setStatus(taskToUpdate.getStatus());
         }
@@ -90,7 +104,6 @@ public class TaskServiceImpl implements TaskService {
                 && taskToUpdate.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
             tasksList.setStatus(statusService.getStatusByName(Status.StatusName.IN_PROGRESS));
         }
-
 
         if (taskToUpdate.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
             taskToUpdate.setFinishDate(LocalDateTime.now());

@@ -3,8 +3,8 @@ package com.example.todolistapp.service.impl;
 import com.example.todolistapp.model.Status;
 import com.example.todolistapp.repository.StatusRepository;
 import com.example.todolistapp.service.StatusService;
-import org.springframework.stereotype.Service;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class StatusServiceImpl implements StatusService {
@@ -48,6 +48,7 @@ public class StatusServiceImpl implements StatusService {
     @Override
     public Status getStatusByName(Status.StatusName statusName) {
         return statusRepository.findByStatusName(statusName)
-                .orElseThrow(() -> new RuntimeException("Can't find status by statusName " + statusName));
+                .orElseThrow(() ->
+                        new RuntimeException("Can't find status by statusName " + statusName));
     }
 }

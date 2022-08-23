@@ -6,9 +6,9 @@ import com.example.todolistapp.model.User;
 import com.example.todolistapp.service.RoleService;
 import com.example.todolistapp.service.StatusService;
 import com.example.todolistapp.service.UserService;
-import org.springframework.stereotype.Component;
-import javax.annotation.PostConstruct;
 import java.util.Set;
+import javax.annotation.PostConstruct;
+import org.springframework.stereotype.Component;
 
 @Component
 public class DataInitializer {
@@ -48,13 +48,10 @@ public class DataInitializer {
         admin.setPassword("admin123");
         admin.setRoles(Set.of(adminRole));
         userService.createUser(admin);
-        Role role = new Role();
-        role.setRoleName(Role.RoleName.USER);
-        roleService.save(role);
         User user = new User();
         user.setEmail("user@i.ua");
         user.setPassword("user123");
-        user.setRoles(Set.of(role));
+        user.setRoles(Set.of(userRole));
         userService.createUser(user);
     }
 }

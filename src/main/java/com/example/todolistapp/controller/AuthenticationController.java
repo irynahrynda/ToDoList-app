@@ -5,10 +5,10 @@ import com.example.todolistapp.dto.response.UserResponseDto;
 import com.example.todolistapp.mapper.UserMapper;
 import com.example.todolistapp.model.User;
 import com.example.todolistapp.service.AuthenticationService;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import javax.validation.Valid;
 
 @RestController
 public class AuthenticationController {
@@ -19,7 +19,6 @@ public class AuthenticationController {
         this.authService = authService;
         this.userMapper = userMapper;
     }
-
 
     @PostMapping("/register")
     public UserResponseDto register(@RequestBody @Valid UserRequestDto requestDto) {

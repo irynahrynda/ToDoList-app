@@ -1,5 +1,6 @@
 package com.example.todolistapp.model;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Objects;
 
 @Entity
 @Table(name = "statuses")
@@ -45,8 +45,12 @@ public class Status {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Status status = (Status) o;
         return Objects.equals(id, status.id) && statusName == status.statusName;
     }
@@ -58,10 +62,10 @@ public class Status {
 
     @Override
     public String toString() {
-        return "Status{" +
-                "id=" + id +
-                ", statusName=" + statusName +
-                '}';
+        return "Status{"
+                + "id=" + id
+                + ", statusName=" + statusName
+                + '}';
     }
 
     public enum StatusName {

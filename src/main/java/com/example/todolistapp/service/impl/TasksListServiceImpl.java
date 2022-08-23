@@ -5,8 +5,8 @@ import com.example.todolistapp.model.TasksList;
 import com.example.todolistapp.repository.TasksListRepository;
 import com.example.todolistapp.service.StatusService;
 import com.example.todolistapp.service.TasksListService;
-import org.springframework.stereotype.Service;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class TasksListServiceImpl implements TasksListService {
@@ -52,6 +52,12 @@ public class TasksListServiceImpl implements TasksListService {
         if (tasksList.getDeadline() != null) {
             tasksListToUpdate.setDeadline(tasksList.getDeadline());
         }
+
+        if (tasksList.getStatus() != null) {
+            tasksListToUpdate.setStatus(tasksList.getStatus());
+        }
+
+        createTasksList(tasksListToUpdate);
 
         return createTasksList(tasksListToUpdate);
     }
