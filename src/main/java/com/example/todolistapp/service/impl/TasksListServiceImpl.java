@@ -53,6 +53,12 @@ public class TasksListServiceImpl implements TasksListService {
             tasksListToUpdate.setDeadline(tasksList.getDeadline());
         }
 
+        if (tasksList.getStatus() != null) {
+            tasksListToUpdate.setStatus(tasksList.getStatus());
+        }
+
+        createTasksList(tasksListToUpdate);
+
         return createTasksList(tasksListToUpdate);
     }
 

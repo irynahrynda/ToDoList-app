@@ -31,7 +31,7 @@ public class TasksListController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Create taskslist board by id")
+    @ApiOperation(value = "Create taskslist by id")
     public TasksListResponseDto createTasksList(@RequestBody TasksListRequestDto tasksListRequestDto) {
         TasksList tasksList = tasksListService.createTasksList(
                 tasksListMapper.mapToModel(tasksListRequestDto));

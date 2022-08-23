@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.POST, "/taskslists").hasRole(ROLE_USER)
 //                .antMatchers(HttpMethod.PUT, "/taskslists").hasRole(ROLE_USER)
 //                .antMatchers(HttpMethod.GET, "/users/by-email").hasRole(ROLE_ADMIN)
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .formLogin()
                 .permitAll()
