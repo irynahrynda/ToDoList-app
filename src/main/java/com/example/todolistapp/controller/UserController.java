@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -33,7 +35,7 @@ public class UserController {
 
     @PostMapping
     @ApiOperation(value = "Create new user")
-    public UserResponseDto createUser(@RequestBody UserRequestDto userRequestDto) {
+    public UserResponseDto createUser(@RequestBody @Valid UserRequestDto userRequestDto) {
         User user = userService.createUser(userMapper.mapToModel(userRequestDto));
         return userMapper.mapToDto(user);
     }
@@ -59,7 +61,7 @@ public class UserController {
     @PutMapping("/{id}")
     @ApiOperation(value = "Update user by id")
     public UserResponseDto updateUser(@PathVariable Long id,
-                                      @RequestBody UserRequestDto userRequestDto) {
+                                      @RequestBody @Valid UserRequestDto userRequestDto) {
         User user = userService.updateUserById(id, userMapper.mapToModel(userRequestDto));
         return userMapper.mapToDto(user);
     }

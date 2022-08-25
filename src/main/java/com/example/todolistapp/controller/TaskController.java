@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -34,7 +36,7 @@ public class TaskController {
     @PostMapping("/taskslists/{id}")
     @ApiOperation(value = "Create new task")
     public TaskResponseDto createTask(@PathVariable Long id,
-                                      @RequestBody TaskRequestDto taskRequestDto) {
+                                      @RequestBody @Valid TaskRequestDto taskRequestDto) {
         Task task = taskService.createTask(id, taskMapper.mapToModel(taskRequestDto));
         return taskMapper.mapToDto(task);
     }
@@ -60,7 +62,7 @@ public class TaskController {
     @PutMapping("/{id}")
     @ApiOperation(value = "Update task by id")
     public TaskResponseDto updateTask(@PathVariable Long id,
-                                      @RequestBody TaskRequestDto taskRequestDto) {
+                                      @RequestBody @Valid TaskRequestDto taskRequestDto) {
         Task task = taskService.updateTaskById(id, taskMapper.mapToModel(taskRequestDto));
         return taskMapper.mapToDto(task);
     }

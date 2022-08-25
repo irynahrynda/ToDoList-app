@@ -60,7 +60,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User getUserByEmail(String email) {
+        return userRepository.findUserByEmail(email).orElseThrow(
+                () -> new RuntimeException("Can`t find user by email " + email));
     }
+
+
 }
