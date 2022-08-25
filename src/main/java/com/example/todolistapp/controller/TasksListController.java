@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/taskslists")
 public class TasksListController {
@@ -32,7 +34,7 @@ public class TasksListController {
 
     @PostMapping
     @ApiOperation(value = "Create taskslist by id")
-    public TasksListResponseDto createTasksList(@RequestBody TasksListRequestDto tasksListRequestDto) {
+    public TasksListResponseDto createTasksList(@RequestBody @Valid TasksListRequestDto tasksListRequestDto) {
         TasksList tasksList = tasksListService.createTasksList(
                 tasksListMapper.mapToModel(tasksListRequestDto));
         return tasksListMapper.mapToDto(tasksList);
@@ -59,7 +61,7 @@ public class TasksListController {
     @PutMapping("/{id}")
     @ApiOperation(value = "Update taskslist by id")
     public TasksListResponseDto updateTasksList(@PathVariable Long id,
-                                                @RequestBody TasksListRequestDto tasksListRequestDto) {
+                                                @RequestBody @Valid TasksListRequestDto tasksListRequestDto) {
         TasksList tasksList = tasksListService.updateTasksListById(id,
                 tasksListMapper.mapToModel(tasksListRequestDto));
         return tasksListMapper.mapToDto(tasksList);

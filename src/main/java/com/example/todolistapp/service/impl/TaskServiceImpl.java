@@ -7,11 +7,10 @@ import com.example.todolistapp.repository.TaskRepository;
 import com.example.todolistapp.service.StatusService;
 import com.example.todolistapp.service.TaskService;
 import com.example.todolistapp.service.TasksListService;
+import java.util.List;
+import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -93,8 +92,7 @@ public class TaskServiceImpl implements TaskService {
         Long tasksCounter = tasksList.getCounter();
 
         if (!tasksList.getStatus().getStatusName().equals(taskToUpdate.getStatus().getStatusName())
-        && taskToUpdate.getStatus().getId() > tasksList.getStatus().getId()
-//                && !tasksList.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
+                && taskToUpdate.getStatus().getId() > tasksList.getStatus().getId()
                 && !taskToUpdate.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
             tasksList.setStatus(taskToUpdate.getStatus());
         }
@@ -113,7 +111,14 @@ public class TaskServiceImpl implements TaskService {
         }
 
         if (tasksCounter == tasksList.getTasks().size()) {
-            tasksList.setStatus(statusService.getStatusByName(Status.StatusName.DONE));
+            if (tasksList.getTasks().stream()
+                    .map(Task::getFinishDate)
+                    .filter(e -> e.isAfter(tasksList.getDeadline()))
+                    .count() > 0) {
+                tasksList.setStatus(statusService.getStatusByName(Status.StatusName.TERMINATED));
+            } else {
+                tasksList.setStatus(statusService.getStatusByName(Status.StatusName.DONE));
+            }
         }
 
         tasksListService.createTasksList(tasksList);
