@@ -1,6 +1,5 @@
 package com.example.todolistapp.dto.response;
 
-import java.util.List;
 import lombok.Data;
 
 @Data

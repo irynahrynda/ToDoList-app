@@ -89,14 +89,14 @@ public class TasksList {
 
     @Override
     public String toString() {
-        return "TasksList{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", status=" + status +
-                ", deadline=" + deadline +
-                ", tasks=" + tasks +
-                ", user=" + user +
-                ", counter=" + counter +
-                '}';
+        return "TasksList{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", status=" + status
+                + ", deadline=" + deadline
+                + ", tasks=" + tasks
+                + ", user=" + user
+                + ", counter=" + counter
+                + '}';
     }
 }

@@ -49,9 +49,11 @@ public class TaskController {
     @GetMapping
     @ApiOperation(value = "Get all tasks with pagination")
     public List<TaskResponseDto> getAllTasks(@RequestParam(defaultValue = "10")
-                                             @ApiParam(value = "Default value " + "is `10`") Integer count,
+                                             @ApiParam(value = "Default value " + "is `10`")
+                                             Integer count,
                                              @RequestParam(defaultValue = "0")
-                                             @ApiParam(value = "Default value " + "is `0`") Integer page) {
+                                             @ApiParam(value = "Default value " + "is `0`")
+                                             Integer page) {
         PageRequest pageRequest = PageRequest.of(page, count);
         return taskService.getAllTasks().stream()
                 .map(taskMapper::mapToDto)

@@ -1,9 +1,12 @@
 package com.example.todolistapp.service.impl;
 
+import com.example.todolistapp.model.Role;
 import com.example.todolistapp.model.User;
 import com.example.todolistapp.repository.UserRepository;
 import com.example.todolistapp.service.UserService;
 import java.util.List;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() ->
-                new RuntimeException("Can't find user by id " + userId));
+                new RuntimeException("Can't get user by id " + userId));
     }
 
     @Override
@@ -61,6 +64,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByEmail(String email) {
         return userRepository.findUserByEmail(email).orElseThrow(
-                () -> new RuntimeException("Can`t find user by email " + email));
+                () -> new RuntimeException("Can`t get user by email " + email));
+    }
+
+    @Override
+    public String getUserEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
+    @Override
+    public boolean hasAdminRole(User user) {
+        return user.getRoles().stream()
+                .map(Role::getRoleName)
+                .anyMatch(e -> e.equals(Role.RoleName.ADMIN));
     }
 }
