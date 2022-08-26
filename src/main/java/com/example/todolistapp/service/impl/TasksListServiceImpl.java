@@ -2,15 +2,12 @@ package com.example.todolistapp.service.impl;
 
 import com.example.todolistapp.model.Status;
 import com.example.todolistapp.model.TasksList;
+import com.example.todolistapp.model.User;
 import com.example.todolistapp.repository.TasksListRepository;
 import com.example.todolistapp.service.StatusService;
 import com.example.todolistapp.service.TasksListService;
-import java.util.List;
-
 import com.example.todolistapp.service.UserService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +16,9 @@ public class TasksListServiceImpl implements TasksListService {
     private final StatusService statusService;
     private final UserService userService;
 
-    public TasksListServiceImpl(TasksListRepository tasksListRepository, StatusService statusService, UserService userService) {
+    public TasksListServiceImpl(TasksListRepository tasksListRepository,
+                                StatusService statusService,
+                                UserService userService) {
         this.tasksListRepository = tasksListRepository;
         this.statusService = statusService;
         this.userService = userService;
@@ -31,22 +30,31 @@ public class TasksListServiceImpl implements TasksListService {
             tasksList.setStatus(statusService.getStatusByName(Status.StatusName.TO_DO));
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        tasksList.setUser(userService.getUserByEmail(currentPrincipalName));
-
+        tasksList.setUser(userService.getUserByEmail(userService.getUserEmail()));
         return tasksListRepository.save(tasksList);
     }
 
     @Override
     public TasksList getTasksListById(Long tasksListId) {
-        return tasksListRepository.findById(tasksListId).orElseThrow(() ->
-                new RuntimeException("Can't find tasksListId by id " + tasksListId));
+        User user = userService.getUserByEmail(userService.getUserEmail());
+        if (userService.hasAdminRole(user)) {
+            return tasksListRepository.findById(tasksListId).orElseThrow(() ->
+                    new RuntimeException("Can't get taskslist by id " + tasksListId));
+        } else {
+            return tasksListRepository.findByIdAndUserName(tasksListId,
+                    user.getId()).orElseThrow(() -> new RuntimeException(
+                            "Can't have access to another taskslist by id " + tasksListId));
+        }
     }
 
     @Override
-    public List<TasksList> getAllTasksList() {
-        return tasksListRepository.findAll();
+    public List<TasksList> getAllTasksLists() {
+        User user = userService.getUserByEmail(userService.getUserEmail());
+        if (userService.hasAdminRole(user)) {
+            return tasksListRepository.findAll();
+        } else {
+            return tasksListRepository.findByUserEmail(userService.getUserEmail());
+        }
     }
 
     @Override
@@ -68,9 +76,8 @@ public class TasksListServiceImpl implements TasksListService {
             tasksListToUpdate.setStatus(tasksList.getStatus());
         }
 
-        createTasksList(tasksListToUpdate);
+        return tasksListRepository.save(tasksListToUpdate);
 
-        return createTasksList(tasksListToUpdate);
     }
 
     @Override

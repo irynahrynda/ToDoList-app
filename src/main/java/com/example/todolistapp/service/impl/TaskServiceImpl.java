@@ -3,12 +3,15 @@ package com.example.todolistapp.service.impl;
 import com.example.todolistapp.model.Status;
 import com.example.todolistapp.model.Task;
 import com.example.todolistapp.model.TasksList;
+import com.example.todolistapp.model.User;
 import com.example.todolistapp.repository.TaskRepository;
+import com.example.todolistapp.repository.TasksListRepository;
 import com.example.todolistapp.service.StatusService;
 import com.example.todolistapp.service.TaskService;
 import com.example.todolistapp.service.TasksListService;
-import java.util.List;
+import com.example.todolistapp.service.UserService;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +20,18 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final StatusService statusService;
     private final TasksListService tasksListService;
+    private final TasksListRepository tasksListRepository;
+    private final UserService userService;
 
     public TaskServiceImpl(TaskRepository taskRepository, StatusService statusService,
-                           TasksListService tasksListService) {
+                           TasksListService tasksListService,
+                           TasksListRepository tasksListRepository,
+                           UserService userService) {
         this.taskRepository = taskRepository;
         this.statusService = statusService;
         this.tasksListService = tasksListService;
+        this.tasksListRepository = tasksListRepository;
+        this.userService = userService;
     }
 
     @Transactional
@@ -37,19 +46,26 @@ public class TaskServiceImpl implements TaskService {
 
         if (task.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
             task.setStatus(statusService.getStatusByName(Status.StatusName.IN_PROGRESS));
-            System.out.println("Can't create task  with status \"DONE\", task has status \"IN PROGRESS\"");
+            System.out.println("Can't create task with status \"DONE\", "
+                    + "task has status \"IN PROGRESS\"");
         }
 
         if (task.getStatus() == null) {
             task.setStatus(statusService.getStatusByName(Status.StatusName.TO_DO));
         }
 
-        Task createdTask = taskRepository.save(task);
+        Task createdTask = new Task();
+        if (tasksList.getUser().getEmail().equals(userService.getUserEmail())) {
+            createdTask = taskRepository.save(task);
+        } else {
+            throw new RuntimeException("Can't add task to this taskslist");
+        }
+
         if (createdTask != null) {
             List<Task> tasks = tasksList.getTasks();
             tasks.add(createdTask);
             tasksList.setTasks(tasks);
-            tasksListService.createTasksList(tasksList);
+            tasksListRepository.save(tasksList);
         }
 
         updateStatusTasksList(createdTask);
@@ -58,13 +74,26 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task getTaskById(Long taskId) {
-        return taskRepository.findById(taskId).orElseThrow(() ->
-                new RuntimeException("Can't find task by id " + taskId));
+        User user = userService.getUserByEmail(userService.getUserEmail());
+        if (userService.hasAdminRole(user)) {
+            return taskRepository.findById(taskId).orElseThrow(() ->
+                    new RuntimeException("Can't get task by id " + taskId));
+        } else {
+            return taskRepository.findByIdAndUserName(taskId,
+                    userService.getUserByEmail(
+                            userService.getUserEmail()).getId()).orElseThrow(() ->
+                    new RuntimeException("Can't have access to another task by id " + taskId));
+        }
     }
 
     @Override
     public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+        User user = userService.getUserByEmail(userService.getUserEmail());
+        if (userService.hasAdminRole(user)) {
+            return taskRepository.findAll();
+        } else {
+            return taskRepository.findAllByUserId(user.getId());
+        }
     }
 
     @Transactional
@@ -112,15 +141,12 @@ public class TaskServiceImpl implements TaskService {
 
         if (tasksCounter == tasksList.getTasks().size()) {
             if (tasksList.getTasks().stream()
-                    .map(Task::getFinishDate)
-                    .filter(e -> e.isAfter(tasksList.getDeadline()))
-                    .count() > 0) {
+                    .map(Task::getFinishDate).anyMatch(e -> e.isAfter(tasksList.getDeadline()))) {
                 tasksList.setStatus(statusService.getStatusByName(Status.StatusName.TERMINATED));
             } else {
                 tasksList.setStatus(statusService.getStatusByName(Status.StatusName.DONE));
             }
         }
-
-        tasksListService.createTasksList(tasksList);
+        tasksListRepository.save(tasksList);
     }
 }

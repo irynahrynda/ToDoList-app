@@ -6,9 +6,4 @@ import lombok.Data;
 public class RoleResponseDto {
     private Long id;
     private String roleName;
-
-    public enum RoleName {
-        USER,
-        ADMIN
-    }
 }

@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/tasks")
@@ -50,9 +49,11 @@ public class TaskController {
     @GetMapping
     @ApiOperation(value = "Get all tasks with pagination")
     public List<TaskResponseDto> getAllTasks(@RequestParam(defaultValue = "10")
-                                             @ApiParam(value = "Default value " + "is `10`") Integer count,
+                                             @ApiParam(value = "Default value " + "is `10`")
+                                             Integer count,
                                              @RequestParam(defaultValue = "0")
-                                             @ApiParam(value = "Default value " + "is `0`") Integer page) {
+                                             @ApiParam(value = "Default value " + "is `0`")
+                                             Integer page) {
         PageRequest pageRequest = PageRequest.of(page, count);
         return taskService.getAllTasks().stream()
                 .map(taskMapper::mapToDto)

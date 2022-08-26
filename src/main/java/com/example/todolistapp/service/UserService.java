@@ -2,7 +2,6 @@ package com.example.todolistapp.service;
 
 import com.example.todolistapp.model.User;
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
     User createUser(User user);
@@ -16,4 +15,8 @@ public interface UserService {
     void deleteUserById(Long userId);
 
     User getUserByEmail(String email);
+
+    String getUserEmail();
+
+    boolean hasAdminRole(User user);
 }
