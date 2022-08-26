@@ -36,7 +36,6 @@ public class StatusServiceImpl implements StatusService {
         if (status.getStatusName() != null) {
             statusToUpdate.setStatusName(status.getStatusName());
         }
-
         return createStatus(statusToUpdate);
     }
 

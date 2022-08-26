@@ -4,7 +4,6 @@ import com.example.todolistapp.model.User;
 import com.example.todolistapp.repository.UserRepository;
 import com.example.todolistapp.service.UserService;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +63,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByEmail(email).orElseThrow(
                 () -> new RuntimeException("Can`t find user by email " + email));
     }
-
-
 }

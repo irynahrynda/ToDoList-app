@@ -4,11 +4,14 @@ import com.example.todolistapp.model.Status;
 import com.example.todolistapp.model.Task;
 import com.example.todolistapp.model.TasksList;
 import com.example.todolistapp.repository.TaskRepository;
+import com.example.todolistapp.repository.TasksListRepository;
 import com.example.todolistapp.service.StatusService;
 import com.example.todolistapp.service.TaskService;
 import com.example.todolistapp.service.TasksListService;
 import java.util.List;
 import java.time.LocalDateTime;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +20,14 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final StatusService statusService;
     private final TasksListService tasksListService;
+    private final TasksListRepository tasksListRepository;
 
     public TaskServiceImpl(TaskRepository taskRepository, StatusService statusService,
-                           TasksListService tasksListService) {
+                           TasksListService tasksListService, TasksListRepository tasksListRepository) {
         this.taskRepository = taskRepository;
         this.statusService = statusService;
         this.tasksListService = tasksListService;
+        this.tasksListRepository = tasksListRepository;
     }
 
     @Transactional
@@ -44,12 +49,20 @@ public class TaskServiceImpl implements TaskService {
             task.setStatus(statusService.getStatusByName(Status.StatusName.TO_DO));
         }
 
-        Task createdTask = taskRepository.save(task);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Task createdTask = new Task();
+        if (tasksList.getUser().getEmail().equals(currentPrincipalName)) {
+             createdTask = taskRepository.save(task);
+        } else {
+            throw new RuntimeException("You can't add task to this taskslist");
+        }
+
         if (createdTask != null) {
             List<Task> tasks = tasksList.getTasks();
             tasks.add(createdTask);
             tasksList.setTasks(tasks);
-            tasksListService.createTasksList(tasksList);
+            tasksListRepository.save(tasksList);
         }
 
         updateStatusTasksList(createdTask);
@@ -120,7 +133,6 @@ public class TaskServiceImpl implements TaskService {
                 tasksList.setStatus(statusService.getStatusByName(Status.StatusName.DONE));
             }
         }
-
-        tasksListService.createTasksList(tasksList);
+        tasksListRepository.save(tasksList);
     }
 }

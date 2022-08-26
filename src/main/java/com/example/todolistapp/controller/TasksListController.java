@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
 
 @RestController
@@ -46,18 +45,6 @@ public class TasksListController {
         return tasksListMapper.mapToDto(tasksListService.getTasksListById(id));
     }
 
-    @GetMapping
-    @ApiOperation(value = "Get all taskslist with pagination")
-    public List<TasksListResponseDto> getAllTasksLists(@RequestParam(defaultValue = "10")
-                                                       @ApiParam(value = "Default value " + "is `10`") Integer count,
-                                                       @RequestParam(defaultValue = "0")
-                                                       @ApiParam(value = "Default value " + "is `0`") Integer page) {
-        PageRequest pageRequest = PageRequest.of(page, count);
-        return tasksListService.getAllTasksList().stream()
-                .map(tasksListMapper::mapToDto)
-                .collect(Collectors.toList());
-    }
-
     @PutMapping("/{id}")
     @ApiOperation(value = "Update taskslist by id")
     public TasksListResponseDto updateTasksList(@PathVariable Long id,
@@ -72,5 +59,18 @@ public class TasksListController {
     public String deleteTasksListById(@PathVariable Long id) {
         tasksListService.deleteTasksListById(id);
         return "TasksList by id " + id + " was deleted";
+    }
+
+    @GetMapping
+    @ApiOperation(value = "Get all user taskslist with pagination")
+    public List<TasksListResponseDto> getAllUsersTasksLists(@RequestParam(defaultValue = "10")
+                                                       @ApiParam(value = "Default value " + "is `10`") Integer count,
+                                                       @RequestParam(defaultValue = "0")
+                                                       @ApiParam(value = "Default value " + "is `0`") Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, count);
+        return tasksListService.getAllTasksLists()
+                .stream()
+                .map(tasksListMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 }

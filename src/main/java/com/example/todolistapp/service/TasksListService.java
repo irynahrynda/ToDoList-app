@@ -8,7 +8,7 @@ public interface TasksListService {
 
     TasksList getTasksListById(Long tasksListId);
 
-    List<TasksList> getAllTasksList();
+    List<TasksList> getAllTasksLists();
 
     TasksList updateTasksListById(Long tasksListId, TasksList tasksList);
 

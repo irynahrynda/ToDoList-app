@@ -1,16 +1,16 @@
 package com.example.todolistapp.service.impl;
 
+import com.example.todolistapp.model.Role;
 import com.example.todolistapp.model.Status;
 import com.example.todolistapp.model.TasksList;
+import com.example.todolistapp.model.User;
 import com.example.todolistapp.repository.TasksListRepository;
 import com.example.todolistapp.service.StatusService;
 import com.example.todolistapp.service.TasksListService;
-import java.util.List;
-
 import com.example.todolistapp.service.UserService;
+import java.util.List;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +19,8 @@ public class TasksListServiceImpl implements TasksListService {
     private final StatusService statusService;
     private final UserService userService;
 
-    public TasksListServiceImpl(TasksListRepository tasksListRepository, StatusService statusService, UserService userService) {
+    public TasksListServiceImpl(TasksListRepository tasksListRepository, StatusService statusService,
+                                UserService userService) {
         this.tasksListRepository = tasksListRepository;
         this.statusService = statusService;
         this.userService = userService;
@@ -45,8 +46,19 @@ public class TasksListServiceImpl implements TasksListService {
     }
 
     @Override
-    public List<TasksList> getAllTasksList() {
-        return tasksListRepository.findAll();
+    public List<TasksList> getAllTasksLists() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        User user = userService.getUserByEmail(currentPrincipalName);
+        if (user.getRoles().stream()
+                .map(e -> e.getRoleName())
+                .filter(e -> e.equals(Role.RoleName.ADMIN))
+                .count() > 0) {
+//        if (user.getRoles().contains(Role.RoleName.ADMIN)) {
+           return tasksListRepository.findAll();
+        } else {
+           return tasksListRepository.findByUserEmail(currentPrincipalName);
+        }
     }
 
     @Override
