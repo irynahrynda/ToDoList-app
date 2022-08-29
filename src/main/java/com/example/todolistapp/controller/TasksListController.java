@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class TasksListController {
         this.tasksListMapper = tasksListMapper;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @PostMapping
     @ApiOperation(value = "Create taskslist by id")
     public TasksListResponseDto createTasksList(
@@ -41,14 +43,16 @@ public class TasksListController {
         return tasksListMapper.mapToDto(tasksList);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @GetMapping("/{id}")
     @ApiOperation(value = "Get taskslist by id")
     public TasksListResponseDto getTasksListById(@PathVariable Long id) {
         return tasksListMapper.mapToDto(tasksListService.getTasksListById(id));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @GetMapping
-    @ApiOperation(value = "Get all user taskslist with pagination")
+    @ApiOperation(value = "Get all taskslist with pagination")
     public List<TasksListResponseDto> getAllUsersTasksLists(
             @RequestParam(defaultValue = "10")
             @ApiParam(value = "Default value " + "is `10`")
@@ -57,12 +61,13 @@ public class TasksListController {
             @ApiParam(value = "Default value " + "is `0`")
             Integer page) {
         PageRequest pageRequest = PageRequest.of(page, count);
-        return tasksListService.getAllTasksLists()
+        return tasksListService.getAllTasksLists(pageRequest)
                 .stream()
                 .map(tasksListMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @PutMapping("/{id}")
     @ApiOperation(value = "Update taskslist by id")
     public TasksListResponseDto updateTasksList(@PathVariable Long id,
@@ -73,6 +78,7 @@ public class TasksListController {
         return tasksListMapper.mapToDto(tasksList);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete taskslist by id")
     public String deleteTasksListById(@PathVariable Long id) {

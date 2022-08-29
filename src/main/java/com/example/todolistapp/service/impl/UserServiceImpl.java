@@ -5,6 +5,7 @@ import com.example.todolistapp.model.User;
 import com.example.todolistapp.repository.UserRepository;
 import com.example.todolistapp.service.UserService;
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(PageRequest pageRequest) {
         return userRepository.findAll();
     }
 

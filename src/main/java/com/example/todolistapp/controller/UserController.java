@@ -33,6 +33,7 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @PostMapping
     @ApiOperation(value = "Create new user")
     public UserResponseDto createUser(@RequestBody @Valid UserRequestDto userRequestDto) {
@@ -47,6 +48,7 @@ public class UserController {
         return userMapper.mapToDto(userService.getUserById(id));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @GetMapping
     @ApiOperation(value = "Get all users with pagination")
     public List<UserResponseDto> getAllUsers(
@@ -57,11 +59,12 @@ public class UserController {
                                              @ApiParam(value = "Default value " + "is `0`")
                                              Integer page) {
         PageRequest pageRequest = PageRequest.of(page, count);
-        return userService.getAllUsers().stream()
+        return userService.getAllUsers(pageRequest).stream()
                 .map(userMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @PutMapping("/{id}")
     @ApiOperation(value = "Update user by id")
     public UserResponseDto updateUser(@PathVariable Long id,
@@ -70,6 +73,7 @@ public class UserController {
         return userMapper.mapToDto(user);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete user by id")
     public String deleteUserById(@PathVariable Long id) {

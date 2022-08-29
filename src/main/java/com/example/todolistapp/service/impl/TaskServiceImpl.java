@@ -12,6 +12,7 @@ import com.example.todolistapp.service.TasksListService;
 import com.example.todolistapp.service.UserService;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,7 +88,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getAllTasks() {
+    public List<Task> getAllTasks(PageRequest pageRequest) {
         User user = userService.getUserByEmail(userService.getUserEmail());
         if (userService.hasAdminRole(user)) {
             return taskRepository.findAll();

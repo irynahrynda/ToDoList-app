@@ -8,6 +8,7 @@ import com.example.todolistapp.service.StatusService;
 import com.example.todolistapp.service.TasksListService;
 import com.example.todolistapp.service.UserService;
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -48,7 +49,7 @@ public class TasksListServiceImpl implements TasksListService {
     }
 
     @Override
-    public List<TasksList> getAllTasksLists() {
+    public List<TasksList> getAllTasksLists(PageRequest pageRequest) {
         User user = userService.getUserByEmail(userService.getUserEmail());
         if (userService.hasAdminRole(user)) {
             return tasksListRepository.findAll();
