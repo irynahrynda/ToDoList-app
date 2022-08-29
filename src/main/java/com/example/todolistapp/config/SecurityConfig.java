@@ -38,15 +38,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/register", "/login").permitAll()
+                .antMatchers("/register", "/login", "/swagger-ui/**", "/swagger-resources/**",
+                        "/v3/api-docs").permitAll()
                 .antMatchers(HttpMethod.GET,
                         "/taskslists/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
                 .antMatchers(HttpMethod.PUT,
                         "/taskslists/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
                 .antMatchers(HttpMethod.POST,
-                        "/taskslists/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
+                        "/taskslists/**").hasAnyRole(ROLE_ADMIN, ROLE_ADMIN)
                 .antMatchers(HttpMethod.DELETE,
-                        "/taskslists/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
+                        "/taskslists/**").hasAnyRole(ROLE_ADMIN)
                 .antMatchers(HttpMethod.GET,
                         "/tasks/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
                 .antMatchers(HttpMethod.PUT,
@@ -54,15 +55,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,
                         "/tasks/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
                 .antMatchers(HttpMethod.DELETE,
-                        "/tasks/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
+                        "/tasks/**").hasAnyRole(ROLE_ADMIN)
                 .antMatchers(HttpMethod.GET,
-                        "/users/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
-                .antMatchers(HttpMethod.PUT,
                         "/users/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
                 .antMatchers(HttpMethod.POST,
                         "/users/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
-                .antMatchers(HttpMethod.DELETE,
+                .antMatchers(HttpMethod.PUT,
                         "/users/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
+                .antMatchers(HttpMethod.DELETE,
+                        "/users/**").hasAnyRole(ROLE_ADMIN)
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class TaskController {
         this.taskMapper = taskMapper;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @PostMapping("/taskslists/{id}")
     @ApiOperation(value = "Create new task")
     public TaskResponseDto createTask(@PathVariable Long id,
@@ -40,12 +42,14 @@ public class TaskController {
         return taskMapper.mapToDto(task);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @GetMapping("/{id}")
     @ApiOperation(value = "Get task by id")
     public TaskResponseDto getTaskById(@PathVariable Long id) {
         return taskMapper.mapToDto(taskService.getTaskById(id));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @GetMapping
     @ApiOperation(value = "Get all tasks with pagination")
     public List<TaskResponseDto> getAllTasks(@RequestParam(defaultValue = "10")
@@ -55,11 +59,12 @@ public class TaskController {
                                              @ApiParam(value = "Default value " + "is `0`")
                                              Integer page) {
         PageRequest pageRequest = PageRequest.of(page, count);
-        return taskService.getAllTasks().stream()
+        return taskService.getAllTasks(pageRequest).stream()
                 .map(taskMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @PutMapping("/{id}")
     @ApiOperation(value = "Update task by id")
     public TaskResponseDto updateTask(@PathVariable Long id,
@@ -68,6 +73,7 @@ public class TaskController {
         return taskMapper.mapToDto(task);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete task by id")
     public String deleteTaskById(@PathVariable Long id) {
