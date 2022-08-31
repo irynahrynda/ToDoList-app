@@ -21,9 +21,9 @@ This project has an authentication system based on Spring security, using JWT to
 - --
 
 ### Available endpoints in the project:
-- `http://localhost:8080/taskslists/` 
-- `http://localhost:8080/tasks/` 
-- `http://localhost:8080/users/`
+- `http://localhost:8080/taskslists/**` 
+- `http://localhost:8080/tasks/**` 
+- `http://localhost:8080/users/**`
 - --
 
 ### Used technologies
