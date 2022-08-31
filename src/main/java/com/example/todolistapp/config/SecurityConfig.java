@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/register", "/login", "/swagger-ui/**", "/swagger-resources/**",
-                        "/v3/api-docs").permitAll()
+                        "/v3/api-docs", "/v2/api-docs").permitAll()
                 .antMatchers(HttpMethod.GET,
                         "/taskslists/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
                 .antMatchers(HttpMethod.PUT,
