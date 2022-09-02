@@ -5,6 +5,7 @@ import com.example.todolistapp.model.User;
 import com.example.todolistapp.repository.UserRepository;
 import com.example.todolistapp.service.UserService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -63,9 +64,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findUserByEmail(email).orElseThrow(
-                () -> new RuntimeException("Can`t get user by email " + email));
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override

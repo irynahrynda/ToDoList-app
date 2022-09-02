@@ -31,13 +31,15 @@ public class TasksListServiceImpl implements TasksListService {
             tasksList.setStatus(statusService.getStatusByName(Status.StatusName.TO_DO));
         }
 
-        tasksList.setUser(userService.getUserByEmail(userService.getUserEmail()));
+        tasksList.setUser(userService.getUserByEmail(userService.getUserEmail()).orElseThrow(
+                () -> new RuntimeException("Can`t get user by email ")));
         return tasksListRepository.save(tasksList);
     }
 
     @Override
     public TasksList getTasksListById(Long tasksListId) {
-        User user = userService.getUserByEmail(userService.getUserEmail());
+        User user = userService.getUserByEmail(userService.getUserEmail()).orElseThrow(
+                () -> new RuntimeException("Can`t get user by email "));
         if (userService.hasAdminRole(user)) {
             return tasksListRepository.findById(tasksListId).orElseThrow(() ->
                     new RuntimeException("Can't get taskslist by id " + tasksListId));
@@ -50,7 +52,8 @@ public class TasksListServiceImpl implements TasksListService {
 
     @Override
     public List<TasksList> getAllTasksLists(PageRequest pageRequest) {
-        User user = userService.getUserByEmail(userService.getUserEmail());
+        User user = userService.getUserByEmail(userService.getUserEmail()).orElseThrow(
+                () -> new RuntimeException("Can`t get user by email "));
         if (userService.hasAdminRole(user)) {
             return tasksListRepository.findAll();
         } else {

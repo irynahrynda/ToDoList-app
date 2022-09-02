@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,
             attributePaths = {"roles"})
-    Optional<User> findUserByEmail(String email);
+    Optional<User> findByEmail(String email);
 }
