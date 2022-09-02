@@ -9,7 +9,7 @@ import com.example.todolistapp.repository.RoleRepository;
 import com.example.todolistapp.repository.StatusRepository;
 import com.example.todolistapp.repository.TaskRepository;
 import com.example.todolistapp.repository.TasksListRepository;
-import com.example.todolistapp.repository.UserRepository;
+import com.example.todolistapp.service.UserService;
 import java.time.LocalDateTime;
 import java.util.Set;
 import javax.annotation.PostConstruct;
@@ -18,17 +18,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataInitializer {
     private final RoleRepository roleRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final StatusRepository statusRepository;
     private final TasksListRepository tasksListRepository;
     private final TaskRepository taskRepository;
 
-    public DataInitializer(RoleRepository roleRepository, UserRepository userRepository,
+    public DataInitializer(RoleRepository roleRepository, UserService userService,
                            StatusRepository statusRepository,
                            TasksListRepository tasksListRepository,
                            TaskRepository taskRepository) {
         this.roleRepository = roleRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.statusRepository = statusRepository;
         this.tasksListRepository = tasksListRepository;
         this.taskRepository = taskRepository;
@@ -55,21 +55,21 @@ public class DataInitializer {
         admin.setEmail("admin@gmail.com");
         admin.setPassword("admin123");
         admin.setRoles(Set.of(adminRole));
-        userRepository.save(admin);
+        userService.createUser(admin);
 
         User user1 = new User();
         user1.setEmail("userBob@gmail.com");
         user1.setPassword("bob12345");
         user1.setName("Bob");
         user1.setRoles(Set.of(userRole));
-        userRepository.save(user1);
+        userService.createUser(user1);
 
         User user2 = new User();
         user2.setEmail("userAlice@gmail.com");
         user2.setPassword("alice12345");
         user2.setName("Alice");
         user2.setRoles(Set.of(userRole));
-        userRepository.save(user2);
+        userService.createUser(user2);
 
         TasksList tasksList1 = new TasksList();
         tasksList1.setName("Tasklist1Bob");

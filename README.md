@@ -8,7 +8,7 @@ This project has an authentication system based on Spring security, using JWT to
 ### If you want to run this project on your computer, you need:
 1. Clone this project:
 2. Install Lombok plugin (or replace all @Data annotations with getters, setters and toString)
-3. Install MySQL, configure application.properties file to make a connection to DB
+3. Install MySQL or PostgreSQL relational database, configure application.properties file to make a connection to DB
 4. Run 'TodolistAppApplication' class
 5. Use Postman for sending your requests during testing this application
 6. Injection of data are located in config/DataInitializer class.
@@ -29,7 +29,7 @@ This project has an authentication system based on Spring security, using JWT to
 ### Used technologies
 - Java 11
 - SpringBoot Data JPA
-- MySql Database
+- MySql Database/ PostgreSQL Database
 - Lombok
 - Swagger
 - Maven checkstyle plugin

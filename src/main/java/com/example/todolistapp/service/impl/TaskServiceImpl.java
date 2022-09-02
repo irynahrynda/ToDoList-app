@@ -75,21 +75,23 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task getTaskById(Long taskId) {
-        User user = userService.getUserByEmail(userService.getUserEmail());
+        User user = userService.getUserByEmail(userService.getUserEmail()).orElseThrow(
+                () -> new RuntimeException("Can`t get user by email "));
         if (userService.hasAdminRole(user)) {
             return taskRepository.findById(taskId).orElseThrow(() ->
                     new RuntimeException("Can't get task by id " + taskId));
         } else {
             return taskRepository.findByIdAndUserName(taskId,
                     userService.getUserByEmail(
-                            userService.getUserEmail()).getId()).orElseThrow(() ->
+                            userService.getUserEmail()).get().getId()).orElseThrow(() ->
                     new RuntimeException("Can't have access to another task by id " + taskId));
         }
     }
 
     @Override
     public List<Task> getAllTasks(PageRequest pageRequest) {
-        User user = userService.getUserByEmail(userService.getUserEmail());
+        User user = userService.getUserByEmail(userService.getUserEmail()).orElseThrow(
+                () -> new RuntimeException("Can`t get user by email "));
         if (userService.hasAdminRole(user)) {
             return taskRepository.findAll();
         } else {

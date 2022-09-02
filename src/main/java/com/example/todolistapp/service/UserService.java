@@ -2,6 +2,7 @@ package com.example.todolistapp.service;
 
 import com.example.todolistapp.model.User;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 
 public interface UserService {
@@ -15,7 +16,7 @@ public interface UserService {
 
     void deleteUserById(Long userId);
 
-    User getUserByEmail(String email);
+    Optional<User> getUserByEmail(String email);
 
     String getUserEmail();
 
