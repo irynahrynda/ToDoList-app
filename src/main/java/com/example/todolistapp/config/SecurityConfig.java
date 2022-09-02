@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,
                         "/taskslists/**").hasAnyRole(ROLE_ADMIN, ROLE_ADMIN)
                 .antMatchers(HttpMethod.DELETE,
-                        "/taskslists/**").hasAnyRole(ROLE_ADMIN)
+                        "/taskslists/**").hasRole(ROLE_ADMIN)
                 .antMatchers(HttpMethod.GET,
                         "/tasks/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
                 .antMatchers(HttpMethod.PUT,
@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,
                         "/tasks/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
                 .antMatchers(HttpMethod.DELETE,
-                        "/tasks/**").hasAnyRole(ROLE_ADMIN)
+                        "/tasks/**").hasRole(ROLE_ADMIN)
                 .antMatchers(HttpMethod.GET,
                         "/users/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
                 .antMatchers(HttpMethod.POST,
@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT,
                         "/users/**").hasAnyRole(ROLE_ADMIN, ROLE_USER)
                 .antMatchers(HttpMethod.DELETE,
-                        "/users/**").hasAnyRole(ROLE_ADMIN)
+                        "/users/**").hasRole(ROLE_ADMIN)
                 .anyRequest()
                 .authenticated()
                 .and()
