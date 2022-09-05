@@ -27,7 +27,7 @@ This project has an authentication system based on Spring security, using JWT to
 ### Used technologies
 - Java 11
 - SpringBoot Data JPA
-- MySql Database/ PostgreSQL Database
+- MySql Database/PostgreSQL Database
 - Lombok
 - Swagger
 - Maven checkstyle plugin
