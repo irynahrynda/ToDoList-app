@@ -20,6 +20,8 @@ public class TasksList {
     private String name;
     @ManyToOne
     private Status status;
+    @ManyToOne
+    private Priority priority;
     private LocalDateTime deadline;
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "tasksList")
     private List<Task> tasks;
@@ -87,6 +89,14 @@ public class TasksList {
         this.counter = counter;
     }
 
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
     @Override
     public String toString() {
         return "TasksList{"
@@ -97,6 +107,7 @@ public class TasksList {
                 + ", tasks=" + tasks
                 + ", user=" + user
                 + ", counter=" + counter
+                + ", priority=" + priority
                 + '}';
     }
 }

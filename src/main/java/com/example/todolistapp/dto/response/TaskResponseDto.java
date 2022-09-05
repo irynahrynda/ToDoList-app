@@ -8,5 +8,6 @@ public class TaskResponseDto {
     private Long id;
     private String name;
     private StatusResponseDto status;
+    private PriorityResponseDto priority;
     private LocalDateTime finishDate;
 }

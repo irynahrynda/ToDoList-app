@@ -1,11 +1,13 @@
 package com.example.todolistapp.service.impl;
 
+import com.example.todolistapp.model.Priority;
 import com.example.todolistapp.model.Status;
 import com.example.todolistapp.model.Task;
 import com.example.todolistapp.model.TasksList;
 import com.example.todolistapp.model.User;
 import com.example.todolistapp.repository.TaskRepository;
 import com.example.todolistapp.repository.TasksListRepository;
+import com.example.todolistapp.service.PriorityService;
 import com.example.todolistapp.service.StatusService;
 import com.example.todolistapp.service.TaskService;
 import com.example.todolistapp.service.TasksListService;
@@ -23,16 +25,18 @@ public class TaskServiceImpl implements TaskService {
     private final TasksListService tasksListService;
     private final TasksListRepository tasksListRepository;
     private final UserService userService;
+    private final PriorityService priorityService;
 
     public TaskServiceImpl(TaskRepository taskRepository, StatusService statusService,
                            TasksListService tasksListService,
                            TasksListRepository tasksListRepository,
-                           UserService userService) {
+                           UserService userService, PriorityService priorityService) {
         this.taskRepository = taskRepository;
         this.statusService = statusService;
         this.tasksListService = tasksListService;
         this.tasksListRepository = tasksListRepository;
         this.userService = userService;
+        this.priorityService = priorityService;
     }
 
     @Transactional
@@ -42,7 +46,7 @@ public class TaskServiceImpl implements TaskService {
         if (!tasksList.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
             task.setTasksList(tasksList);
         } else {
-            throw new RuntimeException("Cant add task to tasksList");
+            throw new RuntimeException("Cant add task to tasksList by id " + tasksListId);
         }
 
         if (task.getStatus().getStatusName().equals(Status.StatusName.DONE)) {
@@ -53,6 +57,10 @@ public class TaskServiceImpl implements TaskService {
 
         if (task.getStatus() == null) {
             task.setStatus(statusService.getStatusByName(Status.StatusName.TO_DO));
+        }
+
+        if (task.getPriority() == null) {
+            task.setPriority(priorityService.getPriorityByName(Priority.PriorityName.MEDIUM));
         }
 
         Task createdTask = new Task();

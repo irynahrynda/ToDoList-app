@@ -16,4 +16,6 @@ public class TaskRequestDto {
     private String name;
     @Positive
     private Long statusId;
+    @Positive
+    private Long priorityId;
 }

@@ -9,6 +9,7 @@ public class TasksListResponseDto {
     private Long id;
     private String name;
     private StatusResponseDto status;
+    private PriorityResponseDto priority;
     private LocalDateTime deadline;
     private List<TaskResponseDto> tasks;
     private UserResponseDto user;
