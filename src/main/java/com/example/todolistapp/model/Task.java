@@ -17,6 +17,8 @@ public class Task {
     private String name;
     @ManyToOne
     private Status status;
+    @ManyToOne
+    private Priority priority;
     private LocalDateTime finishDate;
     @ManyToOne
     private TasksList tasksList;
@@ -64,6 +66,14 @@ public class Task {
         this.tasksList = tasksList;
     }
 
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
     @Override
     public String toString() {
         return "Task{"
@@ -72,6 +82,7 @@ public class Task {
                 + ", status=" + status
                 + ", finishDate=" + finishDate
                 + ", tasksList=" + tasksList
+                + ", priority=" + priority
                 + '}';
     }
 }

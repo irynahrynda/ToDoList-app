@@ -1,9 +1,11 @@
 package com.example.todolistapp.service.impl;
 
+import com.example.todolistapp.model.Priority;
 import com.example.todolistapp.model.Status;
 import com.example.todolistapp.model.TasksList;
 import com.example.todolistapp.model.User;
 import com.example.todolistapp.repository.TasksListRepository;
+import com.example.todolistapp.service.PriorityService;
 import com.example.todolistapp.service.StatusService;
 import com.example.todolistapp.service.TasksListService;
 import com.example.todolistapp.service.UserService;
@@ -16,19 +18,26 @@ public class TasksListServiceImpl implements TasksListService {
     private final TasksListRepository tasksListRepository;
     private final StatusService statusService;
     private final UserService userService;
+    private final PriorityService priorityService;
 
     public TasksListServiceImpl(TasksListRepository tasksListRepository,
                                 StatusService statusService,
-                                UserService userService) {
+                                UserService userService, PriorityService priorityService) {
         this.tasksListRepository = tasksListRepository;
         this.statusService = statusService;
         this.userService = userService;
+        this.priorityService = priorityService;
     }
 
     @Override
     public TasksList createTasksList(TasksList tasksList) {
         if (tasksList.getStatus() == null) {
             tasksList.setStatus(statusService.getStatusByName(Status.StatusName.TO_DO));
+        }
+
+        if (tasksList.getPriority() == null) {
+            tasksList.setPriority(priorityService
+                    .getPriorityByName(Priority.PriorityName.MEDIUM));
         }
 
         tasksList.setUser(userService.getUserByEmail(userService.getUserEmail()).orElseThrow(
@@ -46,7 +55,7 @@ public class TasksListServiceImpl implements TasksListService {
         } else {
             return tasksListRepository.findByIdAndUserName(tasksListId,
                     user.getId()).orElseThrow(() -> new RuntimeException(
-                            "Can't have access to another taskslist by id " + tasksListId));
+                    "Can't have access to another taskslist by id " + tasksListId));
         }
     }
 

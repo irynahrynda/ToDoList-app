@@ -18,4 +18,6 @@ public class TasksListRequestDto {
     private LocalDateTime deadline;
     @Positive
     private Long statusId;
+    @Positive
+    private Long priorityId;
 }
