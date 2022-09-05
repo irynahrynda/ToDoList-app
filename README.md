@@ -2,7 +2,7 @@
 
 This application is implemented as a taskslist-manager service.
 The goal of the project is to enable users to create task lists and monitor their completion.
-This project has an authentication system based on Spring security, using JWT token.
+This project has an authentication system based on Spring security, using JWT token. There are two roles in the project: USER and ADMIN. 
 - --
 
 ### If you want to run this project on your computer, you need:
@@ -21,9 +21,7 @@ This project has an authentication system based on Spring security, using JWT to
 - --
 
 ### Available endpoints in the project:
-- `http://localhost:8080/taskslists/**` 
-- `http://localhost:8080/tasks/**` 
-- `http://localhost:8080/users/**`
+![img_1.png](img_1.png)
 - --
 
 ### Used technologies
