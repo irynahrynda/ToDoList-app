@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class PriorityResponseDto {
     private Long id;
-    private String priority;
+    private String priorityName;
 }
