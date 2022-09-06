@@ -85,8 +85,8 @@ public class TasksListServiceImpl implements TasksListService {
             tasksListToUpdate.setDeadline(tasksList.getDeadline());
         }
 
-        if (tasksList.getStatus() != null) {
-            tasksListToUpdate.setStatus(tasksList.getStatus());
+        if (tasksList.getPriority() != null) {
+            tasksListToUpdate.setPriority(tasksList.getPriority());
         }
 
         return tasksListRepository.save(tasksListToUpdate);

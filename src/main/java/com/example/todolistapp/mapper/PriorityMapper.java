@@ -20,7 +20,7 @@ public class PriorityMapper {
             priorityResponseDto.setId(priority.getId());
         }
 
-        priorityResponseDto.setPriority(priority.getPriorityName().name());
+        priorityResponseDto.setPriorityName(priority.getPriorityName().name());
         return priorityResponseDto;
     }
 
